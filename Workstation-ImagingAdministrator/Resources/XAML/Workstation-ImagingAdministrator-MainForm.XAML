@@ -1,0 +1,198 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" Name="MainForm" Title="Workstation Imageing Administrator" MinHeight="400" MinWidth="650" Height="Auto" Width="Auto" Style="{DynamicResource MaterialDesignWindow}" WindowStartupLocation="CenterScreen" ResizeMode="CanResize" TextElement.Foreground="{DynamicResource MaterialDesignBody}" TextElement.FontSize="14" TextElement.FontFamily="Roboto" TextOptions.TextFormattingMode="Ideal" TextOptions.TextRenderingMode="Auto" Background="{DynamicResource MaterialDesignPaper}" WindowStyle="ThreeDBorderWindow" SizeToContent="WidthAndHeight">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.BlueGrey.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.DeepOrange.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="0,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" MinHeight="200"/>
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="4,4,4,4">
+            <RadioButton Name="MainRBDPC" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="True" Content="DPC" />
+            <RadioButton Name="MainRBSAH" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Content="SAH" />
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="1000,4,0,4" HorizontalAlignment="Left">
+            <materialDesign:Chip Name="MainUserChip" Content="" Icon=""/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBox Name="SearchBox" Grid.Row="0" Grid.Column="0" materialDesign:HintAssist.Hint="Device Name" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Margin="20,0,0,0" />
+                <DockPanel HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1">
+                    <Button Name="MainBtnImport" Style="{StaticResource MaterialDesignFlatDarkBgButton}" Content="Import List" Margin="10" />
+                    <Button Name="MainBtnNewDevice" Style="{StaticResource MaterialDesignFlatDarkBgButton}" Content="Add Device" Margin="10" />
+                    <Button Name="MainBtnRefresh" Style="{StaticResource MaterialDesignFlatDarkBgButton}" Content="Refresh Data" Margin="10" />
+                    <Button Name="MainBtnClose" Style="{StaticResource MaterialDesignFlatDarkBgButton}" Content="Close" Margin="10" Command="{Binding Close}" IsCancel="True" HorizontalAlignment="Right"/>
+                    <ComboBox Name="MainComboView" materialDesign:HintAssist.Hint="View">
+                        <ComboBoxItem IsSelected="True" Content="Active" />
+                        <ComboBoxItem Content="Completed" />
+                        <ComboBoxItem Content="Errors" />
+                        <ComboBoxItem Content="Removed" />
+
+                        <ComboBoxItem Content="All" />
+
+                    </ComboBox>
+                </DockPanel>
+            </Grid>
+        </StackPanel>
+        <DataGrid Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding DeviceList}" Name="MainDataGrid" CanUserAddRows="False" SelectionUnit="FullRow" SelectionMode="Extended" IsReadOnly="True" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <DataGrid.ContextMenu>
+                <ContextMenu Background="{DynamicResource MaterialDesignPaper}">
+                    <MenuItem Header="Remove Device" ToolTip="Removes the currently selected device from processing" Name="cmRemoveDevice" />
+                    <Separator />
+                    <MenuItem Header="Change Device Details" ToolTip="Changes details about the currently selected device" Name="cmChangeDevice" />
+                    <MenuItem Header="Change Device Status">
+                        <MenuItem Header="Change status to Initial" ToolTip="Changes the currently selected device to Initial status" Name="cmStatusInitial" />
+                        <MenuItem Header="Change status to Tagging" ToolTip="Changes the currently selected device to Tagging status" Name="cmStatusTagging" />
+                        <MenuItem Header="Change status to ARP" ToolTip="Changes the currently selected device to ARP status" Name="cmStatusARP" />
+                        <MenuItem Header="Change status to OG" ToolTip="Changes the currently selected device to OG status" Name="cmStatusOG" />
+                        <MenuItem Header="Change status to Final" ToolTip="Changes the currently selected device to Final status" Name="cmStatusFinal" />
+                        <MenuItem Header="Change status to Completed" ToolTip="Changes the currently selected device to Completed status" Name="cmStatusCompleted" />
+                        <Separator />
+                        <MenuItem Header="Change status to Live ARP" ToolTip="Changes the currently selected device to Live ARP status" Name="cmStatusLiveARP" />
+
+                    </MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+        <Separator Grid.Row="3" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignLightSeparator}" Margin="0,2,0,2" />
+        <Grid Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <materialDesign:Card Grid.Row="0" Grid.Column="0" Background="#03a9f4" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" Padding="8" Width="Auto" Margin="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="16 16 16 4" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="Old Device" HorizontalAlignment="Left"/>
+                    <Separator Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignLightSeparator}" />
+                    <TextBlock Grid.Column="0" Grid.Row="2" TextWrapping="Wrap" Text="Device Name:" />
+                    <TextBlock Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Text="" Name="textblockOldDeviceName" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Column="0" Grid.Row="3" TextWrapping="Wrap" Text="Device Serial:" />
+                    <TextBlock Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Text="" Height="Auto" Name="textblockOldDeviceSerial" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Column="0" Grid.Row="4" TextWrapping="Wrap" Text="Workspace ONE ID:" />
+                    <TextBlock Grid.Column="1" Grid.Row="4" TextWrapping="Wrap" Text="" Name="textblockOldDeviceWS1ID" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Column="0" Grid.Row="5" TextWrapping="Wrap" Text="Workspace ONE OG:" />
+                    <TextBlock Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="" Name="textblockOldDeviceWS1OG" HorizontalAlignment="Right" />
+
+                </Grid>
+            </materialDesign:Card>
+            <materialDesign:Card Grid.Row="0" Grid.Column="1" Background="#03a9f4" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" Padding="8" Width="Auto" Margin="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Margin="16 16 16 4" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="New Device" HorizontalAlignment="Left"/>
+                    <Separator Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignLightSeparator}" />
+                    <TextBlock Grid.Column="0" Grid.Row="2" TextWrapping="Wrap" Text="Device Name:" />
+                    <TextBlock Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Text="" Name="textblockNewDeviceName" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Column="0" Grid.Row="3" TextWrapping="Wrap" Text="Device Serial:" />
+                    <TextBlock Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Text="" Height="Auto" Name="textblockNewDeviceSerial" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Column="0" Grid.Row="4" TextWrapping="Wrap" Text="Workspace ONE ID:" />
+                    <TextBlock Grid.Column="1" Grid.Row="4" TextWrapping="Wrap" Text="" Name="textblockNewDeviceWS1ID" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Column="0" Grid.Row="5" TextWrapping="Wrap" Text="Workspace ONE OG:" />
+                    <TextBlock Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="" Name="textblockNewDeviceWS1OG" HorizontalAlignment="Right" />
+
+                </Grid>
+            </materialDesign:Card>
+            <materialDesign:Card Grid.Row="0" Grid.Column="2" Background="#03a9f4" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" Padding="8" Width="Auto" Margin="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="16 16 16 4" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="Transition Information" HorizontalAlignment="Left"/>
+                    <Separator Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignLightSeparator}" />
+                    <TextBlock Grid.Column="0" Grid.Row="2" TextWrapping="Wrap" Text="Date Added:" />
+                    <TextBlock Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Text="" Name="textblockDateAdded" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Column="0" Grid.Row="3" TextWrapping="Wrap" Text="Last Update:" />
+                    <TextBlock Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Text="" Name="textblockLastUpdate" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Column="0" Grid.Row="4" TextWrapping="Wrap" Text="Initial Phase:" />
+                    <TextBlock Grid.Column="1" Grid.Row="4" TextWrapping="Wrap" Text="" Name="textblockInitialPhase" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Column="0" Grid.Row="5" TextWrapping="Wrap" Text="Tag Phase:" />
+                    <TextBlock Grid.Column="1" Grid.Row="5" TextWrapping="Wrap" Text="" Name="textblockTagPhase" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Column="0" Grid.Row="6" TextWrapping="Wrap" Text="ARP Phase:" />
+                    <TextBlock Grid.Column="1" Grid.Row="6" TextWrapping="Wrap" Text="" Name="textblockARPPhase" HorizontalAlignment="Right" />
+                </Grid>
+            </materialDesign:Card>
+            <materialDesign:Card Grid.Row="0" Grid.Column="3" Background="#03a9f4" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" Padding="8" Width="Auto" Margin="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Margin="16 16 16 4" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="Notes" HorizontalAlignment="Left"/>
+                    <Separator Grid.Column="0" Grid.Row="1" Style="{StaticResource MaterialDesignLightSeparator}" />
+                    <TextBlock Grid.Column="0" Grid.Row="2" Name="textblockNotes" Text="" TextWrapping="Wrap" />
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
+    </Grid>
+</Window>

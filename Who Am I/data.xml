@@ -1,0 +1,7 @@
+<?xml version='1.0'?>
+<data>
+	<BackgroundImage>Background.jpg</BackgroundImage>
+	<BackgroundColour>002B46</BackgroundColour>
+	<EmailAddress></EmailAddress>
+	<AdditionalInformation>2</AdditionalInformation><!-- Number of hours of Windows logs to collect -->
+</data>
